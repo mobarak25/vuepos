@@ -92,6 +92,11 @@
 			return {
         title:"Product Entry",
 			}
-		},          
+    }, 
+    methods:{
+      gg:function(){
+        return alert('go');
+      }
+    }         
 	}
 </script>
