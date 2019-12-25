@@ -1,23 +1,28 @@
 <template>
 	<header class="header">
 		<nav class="navbar navbar-expand-lg">
-			<a class="text-white" href="#">Logo</a>
+			<router-link class="nav-link" to="/">Logo</router-link>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
 			<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 				<ul class="navbar-nav">
-					<li class="active">
-						<router-link class="nav-link" to="/">Home</router-link>
-					</li>
-
 					<li class="dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							File
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Stock</a>
+							<div class="nester-dropdown">
+								<a class="dropdown-item" href="#">Stock</a>
+								<ul>
+									<li>
+										<router-link class="dropdown-item" to="/Add_Product">Add Product</router-link>	
+									</li>
+									<li><a class="dropdown-item" href="#">Sell out Product</a></li>
+									<li><a class="dropdown-item" href="#">Available Produt</a></li>
+								</ul>
+							</div>
 							<a class="dropdown-item" href="#">Search product</a>
 							<a class="dropdown-item" href="#">Product Name</a>
 							<a class="dropdown-item" href="#">Company</a>
@@ -30,6 +35,12 @@
 
 					<li>
 						<router-link class="nav-link" to="/pos">POS</router-link>
+					</li>
+					<li>
+						<router-link class="nav-link" to="/#">Reposts</router-link>
+					</li>
+					<li>
+						<router-link class="nav-link" to="/#">Help</router-link>
 					</li>
 					
 				</ul>
