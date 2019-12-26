@@ -1,27 +1,30 @@
 <template>
   <div class="add-product">
     <h1 class="bit-title">{{ title }}</h1>
-    <div class="row align-items-center flex-wrap">
+    <div
+      v-if="showSpinner"
+      class="d-flex justify-content-center align-items-end"
+      style="height:200px"
+    >
+      <div class="spinner-grow text-dark" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <div v-else class="row align-items-center flex-wrap">
       <div class="col-lg-9">
         <form>
-          
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Product Id:</label>
             <div class="col-sm-10">
-              <input
-                type="text"
-                class="form-control"
-              />
+              <input type="text" class="form-control" :value="jsonData.id" />
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Product Name:</label>
             <div class="col-sm-10">
-              <input
-                type="text"
-                class="form-control"
-              />
+              <input type="text" class="form-control" />
             </div>
           </div>
 
@@ -41,62 +44,81 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Description:</label>
             <div class="col-sm-10">
-              <textarea
-                class="form-control"
-                rows="5"
-              ></textarea>
+              <textarea class="form-control" rows="5"></textarea>
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Cost Price:</label>
             <div class="col-sm-4">
-              <input
-                type="text"
-                class="form-control"
-              />
+              <input type="text" class="form-control" />
             </div>
 
-            <label class="col-sm-2 col-form-label text-right">Selling Price:</label>
+            <label class="col-sm-2 col-form-label text-right"
+              >Selling Price:</label
+            >
             <div class="col-sm-4">
-              <input
-                type="text"
-                class="form-control"
-              />
+              <input type="text" class="form-control" />
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Quantity:</label>
             <div class="col-sm-10">
-              <input
-                type="text"
-                class="form-control"
-              />
+              <input type="text" class="form-control" />
             </div>
           </div>
-
         </form>
       </div>
       <div class="col-lg-3">
-        <button @click="gg" class="btn btn-lg btn-dark w-100 mb-3">SAVE PRODUCT</button><br>
-        <button class="btn btn-lg btn-dark w-100">ALL PRODUCT</button>
+        <button @click="gg" class="btn btn-lg btn-dark w-100 mb-3">
+          SAVE PRODUCT</button
+        ><br />
+        <router-link class="btn btn-lg btn-dark w-100" to="/All_Product">ALL PRODUCT</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-	export default {
-		data:function(){
-			return {
-        title:"Product Entry",
-			}
-    }, 
-    methods:{
-      gg:function(){
-        return alert('go');
+window.axios = require('axios');
+//window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+let axiosConfig = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
       }
-    }         
-	}
+    };
+
+export default {
+  name: "Add_Product",
+  data() {
+    return {
+      title: "Product Entry",
+      showSpinner: true,
+      jsonData: null
+    };
+  },
+  methods: {
+    gg: function() {
+      return alert("go");
+    }
+  },
+  mounted() {   
+    let url = "http://localhost:8081/data/product.json";
+    axios
+      .get(url)
+      .then(res => {
+        console.log(res.data);
+        this.jsonData = res.data;
+       // console.log(this.jsonData);
+        this.showSpinner = false;
+        
+      })
+      .catch(err => {
+        console.log("Error");
+      });
+  }
+};
 </script>

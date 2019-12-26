@@ -1,0 +1,8 @@
+[
+	{"id":1,"company_id":1,"name":"Product name1","description":"Product name","qty":50,"cost_price":300,"selling_price":450},
+	{"id":2,"company_id":1,"name":"Product name2","description":"Product name","qty":50,"cost_price":300,"selling_price":450},
+	{"id":3,"company_id":1,"name":"Product name3","description":"Product name","qty":50,"cost_price":300,"selling_price":450},
+	{"id":4,"company_id":1,"name":"Product name4","description":"Product name","qty":50,"cost_price":300,"selling_price":450},
+	{"id":5,"company_id":1,"name":"Product name5","description":"Product name","qty":50,"cost_price":300,"selling_price":450},
+	{"id":6,"company_id":1,"name":"Product name6","description":"Product name","qty":50,"cost_price":300,"selling_price":450}
+]
