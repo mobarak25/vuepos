@@ -68,7 +68,7 @@ export default {
       title: "Available Category",
       showSpinner: true,
       jsonData: null,
-
+      host:"http://localhost",
       category: ""
     };
   },
@@ -76,10 +76,13 @@ export default {
   methods: {
     addCat: function(e) {
       if (e.length > 0) {
-        let url = "http://localhost:8080/pos/add_categories.php";
+        let url = this.host + "/pos/add_categories.php";
 
         var formdata = new FormData();
         formdata.append("title", e);
+
+        console.log(formdata);
+        return false;
 
         axios
           .post(url, formdata)
@@ -92,7 +95,7 @@ export default {
       }
     },
     getCategories() {
-      let url = "http://localhost:8080/pos/get_categories.php";
+      let url = this.host + "/pos/get_categories.php";
       axios
         .get(url)
         .then(res => {
@@ -106,10 +109,12 @@ export default {
     },
     deleteCat(id) {
       if (id) {
-        let url = "http://localhost:8080/pos/delete_categories.php";
+        let url = this.host + "/pos/delete_categories.php";
 
         var formdata = new FormData();
         formdata.append("id", id);
+
+        
 
         axios
           .post(url, formdata)

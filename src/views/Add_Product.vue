@@ -81,15 +81,14 @@
 </template>
 
 <script>
-window.axios = require('axios');
-//window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios = require("axios");
 
 let axiosConfig = {
-      headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          "Access-Control-Allow-Origin": "*",
-      }
-    };
+  headers: {
+    "Content-Type": "application/json;charset=UTF-8",
+    "Access-Control-Allow-Origin": "*"
+  }
+};
 
 export default {
   name: "Add_Product",
@@ -97,7 +96,8 @@ export default {
     return {
       title: "Product Entry",
       showSpinner: true,
-      jsonData: null
+      jsonData: null,
+      host:"http://localhost",
     };
   },
   methods: {
@@ -106,19 +106,7 @@ export default {
     }
   },
   mounted() {   
-    let url = "http://localhost:8081/data/product.json";
-    axios
-      .get(url)
-      .then(res => {
-        console.log(res.data);
-        this.jsonData = res.data;
-       // console.log(this.jsonData);
-        this.showSpinner = false;
-        
-      })
-      .catch(err => {
-        console.log("Error");
-      });
+    
   }
 };
 </script>
