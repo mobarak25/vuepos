@@ -19,6 +19,9 @@
 									<li>
 										<router-link class="dropdown-item" to="/Add_Product">Add Product</router-link>	
 									</li>
+									<li>
+										<router-link class="dropdown-item" to="/Category">Category</router-link>	
+									</li>
 									<li><a class="dropdown-item" href="#">Sell out Product</a></li>
 									<li><a class="dropdown-item" href="#">Available Produt</a></li>
 								</ul>
