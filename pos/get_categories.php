@@ -5,7 +5,12 @@
 	$stm = $conn->query("SELECT * FROM categories");
 	$rows = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-	echo json_encode($rows);
+	$stm2 = $conn->query("SELECT * FROM products ORDER BY ID DESC LIMIT 1");
+	$rows2 = $stm2->fetchAll(PDO::FETCH_ASSOC);
+
+	echo json_encode(['cat'=>$rows,'last_product'=>$rows2]);
+
+
 
 	$conn=null;
 ?>

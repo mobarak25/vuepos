@@ -17,7 +17,7 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Product Id:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" :value="jsonData.id" />
+              <input :value="productId" type="text" class="form-control" readonly />
             </div>
           </div>
 
@@ -31,12 +31,9 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Company:</label>
             <div class="col-sm-10">
-              <select type="text" class="form-control">
-                <option>--Select Company--</option>
-                <option>Dell</option>
-                <option>HP</option>
-                <option>Samsung</option>
-                <option>Asus</option>
+              <select v-model="selected" type="text" class="form-control">
+                <option value="">--Select Company--</option>
+                <option v-for="(category, index) in jsonData" :key="index" :value="category.id">{{category.title}}</option>
               </select>
             </div>
           </div>
@@ -71,7 +68,7 @@
         </form>
       </div>
       <div class="col-lg-3">
-        <button @click="gg" class="btn btn-lg btn-dark w-100 mb-3">
+        <button @click="addProduct" class="btn btn-lg btn-dark w-100 mb-3">
           SAVE PRODUCT</button
         ><br />
         <router-link class="btn btn-lg btn-dark w-100" to="/All_Product">ALL PRODUCT</router-link>
@@ -95,18 +92,30 @@ export default {
   data() {
     return {
       title: "Product Entry",
+      selected:"",
+      productId:null,
       showSpinner: true,
       jsonData: null,
-      host:"http://localhost",
+      host:"http://localhost:8080",
     };
   },
   methods: {
-    gg: function() {
-      return alert("go");
+    addProduct:function(){
+
     }
   },
   mounted() {   
-    
+    let url = this.host + "/pos/get_categories.php";
+    axios.get(url)
+    .then(res=>{
+      console.log(res);
+      this.jsonData = res.data.cat;
+      this.productId = parseInt(res.data.last_product[0].id) + 1;
+      this.showSpinner = false;
+    })
+    .catch(error=>{
+      console.log("Error");
+    });
   }
 };
 </script>

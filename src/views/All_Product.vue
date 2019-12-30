@@ -18,20 +18,28 @@
             <tr>
               <th>Id</th>
               <th>Name</th>
+              <th>Company</th>
               <th>Description</th>
               <th>Qty</th>
               <th>Cost Price</th>
               <th>Selling Price</th>
+              <th class="text-center">Action</th>
+              
             </tr>
           </thead>
           <tbody>
-            <tr v-for="product in jsonData" :key="product">
+            <tr v-for="(product,index) in jsonData" :key="index">
               <td v-text="product.id"></td>
-              <td v-text="product.name"></td>
+              <td v-text="product.product_name"></td>
+              <td v-text="product.title"></td>
               <td v-text="product.description"></td>
               <td v-text="product.qty"></td>
               <td v-text="product.cost_price"></td>
               <td v-text="product.selling_price"></td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
+                <button @click="deleteProduct(product.id)" class="btn btn-sm btn-danger ml-2"><i class="fa fa-trash"></i></button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -57,23 +65,47 @@ export default {
     return {
       title: "Available Product",
       showSpinner: true,
-      jsonData: null
+      jsonData: null,
+      host:"http://localhost:8080",
     };
   },
 
+  methods:{
+    getProducts:function(){
+      let url = this.host + "/pos/get_products.php";
+      axios
+        .get(url)
+        .then(res => {
+          this.jsonData = res.data;
+          this.showSpinner = false;
+        })
+        .catch(err => {
+          console.log("Error");
+        });
+    },
+    deleteProduct:function(getId){
+      var getConfirm = confirm("Are you sure, You want to delete ? ");
+      if(getId && getConfirm !== false){
+        let url = this.host + "/pos/delete_product.php";
+        var formdata = new FormData();
+        formdata.append("product_id", getId)
+
+        axios
+        .post(url, formdata)
+        .then(res => {
+          this.getProducts();
+        })
+        .catch(err => {
+          console.log("Error");
+        });
+      }
+
+    }
+
+  },
+
   mounted() {
-    let url = "http://localhost:8081/data/product.json";
-    axios
-      .get(url)
-      .then(res => {
-        console.log(res.data);
-        this.jsonData = res.data;
-        // console.log(this.jsonData);
-        this.showSpinner = false;
-      })
-      .catch(err => {
-        console.log("Error");
-      });
+    this.getProducts();
   }
 };
 </script>

@@ -68,7 +68,7 @@ export default {
       title: "Available Category",
       showSpinner: true,
       jsonData: null,
-      host:"http://localhost",
+      host:"http://localhost:8080",
       category: ""
     };
   },
@@ -80,10 +80,6 @@ export default {
 
         var formdata = new FormData();
         formdata.append("title", e);
-
-        console.log(formdata);
-        return false;
-
         axios
           .post(url, formdata)
           .then(res => {
@@ -108,7 +104,8 @@ export default {
         });
     },
     deleteCat(id) {
-      if (id) {
+      var gerConfirm = confirm("Are you seure, You want to delete ?");
+      if (id && gerConfirm !== false) {
         let url = this.host + "/pos/delete_categories.php";
 
         var formdata = new FormData();
