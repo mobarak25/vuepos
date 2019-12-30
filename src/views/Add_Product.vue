@@ -96,7 +96,7 @@ export default {
       productId:null,
       showSpinner: true,
       jsonData: null,
-      host:"http://localhost:8080",
+      host:"https://vuepos.000webhostapp.com/pos",
     };
   },
   methods: {
@@ -105,7 +105,7 @@ export default {
     }
   },
   mounted() {   
-    let url = this.host + "/pos/get_categories.php";
+    let url = this.host + "/get_categories.php";
     axios.get(url)
     .then(res=>{
       console.log(res);

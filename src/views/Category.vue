@@ -68,7 +68,7 @@ export default {
       title: "Available Category",
       showSpinner: true,
       jsonData: null,
-      host:"http://localhost:8080",
+      host:"https://vuepos.000webhostapp.com/pos",
       category: ""
     };
   },
@@ -76,7 +76,7 @@ export default {
   methods: {
     addCat: function(e) {
       if (e.length > 0) {
-        let url = this.host + "/pos/add_categories.php";
+        let url = this.host + "/add_categories.php";
 
         var formdata = new FormData();
         formdata.append("title", e);
@@ -91,11 +91,11 @@ export default {
       }
     },
     getCategories() {
-      let url = this.host + "/pos/get_categories.php";
+      let url = this.host + "/get_categories.php";
       axios
         .get(url)
         .then(res => {
-          this.jsonData = res.data;
+          this.jsonData = res.data.cat;
           this.showSpinner = false;
           this.category = "";
         })
@@ -106,7 +106,7 @@ export default {
     deleteCat(id) {
       var gerConfirm = confirm("Are you seure, You want to delete ?");
       if (id && gerConfirm !== false) {
-        let url = this.host + "/pos/delete_categories.php";
+        let url = this.host + "/delete_categories.php";
 
         var formdata = new FormData();
         formdata.append("id", id);

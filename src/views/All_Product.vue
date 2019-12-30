@@ -66,13 +66,13 @@ export default {
       title: "Available Product",
       showSpinner: true,
       jsonData: null,
-      host:"http://localhost:8080",
+      host:"https://vuepos.000webhostapp.com/pos",
     };
   },
 
   methods:{
     getProducts:function(){
-      let url = this.host + "/pos/get_products.php";
+      let url = this.host + "/get_products.php";
       axios
         .get(url)
         .then(res => {
@@ -86,7 +86,7 @@ export default {
     deleteProduct:function(getId){
       var getConfirm = confirm("Are you sure, You want to delete ? ");
       if(getId && getConfirm !== false){
-        let url = this.host + "/pos/delete_product.php";
+        let url = this.host + "/delete_product.php";
         var formdata = new FormData();
         formdata.append("product_id", getId)
 
