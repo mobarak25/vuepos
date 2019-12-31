@@ -110,9 +110,6 @@ export default {
 
         var formdata = new FormData();
         formdata.append("id", id);
-
-        
-
         axios
           .post(url, formdata)
           .then(res => {

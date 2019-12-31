@@ -134,6 +134,11 @@ body{
 	box-shadow:none;
 	border-radius: 0;
 }
+.table td, .table th {
+	padding:8px 15px;
+	vertical-align: middle;
+	border-top: 1px solid #dee2e6;
+}
 
 /*==========================*/
 /*==========Footer==========*/
