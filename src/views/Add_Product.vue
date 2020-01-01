@@ -1,7 +1,5 @@
 <template>
   <div class="add-product">
-    
-
     <h1 class="bit-title">{{ title }}</h1>
     <div
       v-if="showSpinner"
@@ -13,78 +11,86 @@
       </div>
     </div>
 
-    
     <form v-else v-on:submit.prevent="submitData">
       <div class="row align-items-center flex-wrap">
         <div class="col-lg-9">
-        
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label">Product Id:</label>
-              <div class="col-sm-10">
-                <input :value="productId" type="text" class="form-control" readonly />
-              </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Product Id:</label>
+            <div class="col-sm-10">
+              <input :value="productId" type="text" class="form-control" readonly />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Product Name:</label>
+            <div class="col-sm-10">
+              <input ref="pro_name" v-model="collects.pro_name" type="text" class="form-control" />
+              {{collects.pro_name}}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Category:</label>
+            <div class="col-sm-4">
+              <select ref="selected" v-model="collects.selected" type="text" class="form-control">
+                <option value>--Select Category--</option>
+                <option
+                  v-for="(category, index) in jsonData"
+                  :key="index"
+                  :value="category.id"
+                >{{category.title}}</option>
+              </select>
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label">Product Name:</label>
-              <div class="col-sm-10">
-                <input ref="pName" v-model="pro_name" type="text" class="form-control" />
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label">Category:</label>
-              <div class="col-sm-4">
-                <select v-model="selected" type="text" class="form-control">
-                  <option value="">--Select Category--</option>
-                  <option v-for="(category, index) in jsonData" :key="index" :value="category.id">{{category.title}}</option>
-                </select>
-              </div>
-
-              <label class="col-sm-2 col-form-label text-right">Company:</label>
-              <div class="col-sm-4">
-                <select v-model="company_id" type="text" class="form-control">
-                  <option value="">--Select Company--</option>
-                  <option v-for="(company, index) in companies" :key="index" :value="company.id">{{company.company_name}}</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label">Description:</label>
-              <div class="col-sm-10">
-                <textarea v-model="pro_desc" class="form-control" rows="5"></textarea>
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label">Cost Price:</label>
-              <div class="col-sm-4">
-                <input v-model="pro_cost" type="text" class="form-control" />
-              </div>
-
-              <label class="col-sm-2 col-form-label text-right"
-                >Selling Price:</label
+            <label class="col-sm-2 col-form-label text-right">Company:</label>
+            <div class="col-sm-4">
+              <select
+                ref="company_id"
+                v-model="collects.company_id"
+                type="text"
+                class="form-control"
               >
-              <div class="col-sm-4">
-                <input v-model="pro_sell" type="text" class="form-control" />
-              </div>
+                <option value>--Select Company--</option>
+                <option
+                  v-for="(company, index) in companies"
+                  :key="index"
+                  :value="company.id"
+                >{{company.company_name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Description:</label>
+            <div class="col-sm-10">
+              <textarea ref="pro_desc" v-model="collects.pro_desc" class="form-control" rows="5"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Cost Price:</label>
+            <div class="col-sm-4">
+              <input ref="pro_cost" v-model="collects.pro_cost" type="text" class="form-control" />
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label">Quantity:</label>
-              <div class="col-sm-10">
-                <input ref="pQty" v-model="pro_qty" type="text" class="form-control" />
-              </div>
+            <label class="col-sm-2 col-form-label text-right">Selling Price:</label>
+            <div class="col-sm-4">
+              <input ref="pro_sell" v-model="collects.pro_sell" type="text" class="form-control" />
             </div>
-          
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Quantity:</label>
+            <div class="col-sm-10">
+              <input ref="pro_qty" v-model="collects.pro_qty" type="text" class="form-control" />
+            </div>
+          </div>
         </div>
         <div class="col-lg-3">
-          <button  type="submit"  class="btn btn-lg btn-dark w-100 mb-3">
-            SAVE PRODUCT</button
-          ><br />
+          <button type="submit" class="btn btn-lg btn-dark w-100 mb-3">SAVE PRODUCT</button>
+          <br />
           <router-link class="btn btn-lg btn-dark w-100" to="/All_Product">ALL PRODUCT</router-link>
-          <button @click="getRef">sads</button>
+          <a @click="getRef">sads</a>
         </div>
       </div>
     </form>
@@ -107,34 +113,23 @@ export default {
     return {
       title: "Product Entry",
 
-      collectors:{},
+      collects: {},
 
-      pro_name:"",
-      selected:"",
-      company_id:"",
-      pro_desc:"",
-      pro_cost:"",
-      pro_sell:"",
-      pro_qty:"",
-
-
-      productId:null,
+      productId: null,
       showSpinner: true,
       jsonData: null,
       companies: null,
-      host:"https://vuepos.000webhostapp.com/pos",
+      host: "https://vuepos.000webhostapp.com/pos"
     };
   },
   methods: {
-
-    getRef:function(){
-      Object.keys(this.$refs).forEach( function(element, index) {
-        console.log(element)
+    getRef: function() {
+      Object.keys(this.$refs).forEach(function(element, index) {
+        console.log(element);
       });
     },
-    
-    submitData: function(event) {
 
+    submitData: function(event) {
       let url = this.host + "/add_product.php";
 
       var formdata = new FormData();
@@ -156,22 +151,34 @@ export default {
           console.log("Error");
         });
     },
-    getDatas:function(){
+    getDatas: function() {
       let url = this.host + "/get_categories.php";
-      axios.get(url)
-      .then(res=>{
-        this.jsonData = res.data.cat;
-        this.companies = res.data.company;
-        this.productId = parseInt(res.data.last_product[0].id) + 1;
-        this.showSpinner = false;
-      })
-      .catch(error=>{
-        console.log("Error");
-      });
-    },
+      axios
+        .get(url)
+        .then(res => {
+          this.jsonData = res.data.cat;
+          this.companies = res.data.company;
+          this.productId = parseInt(res.data.last_product[0].id) + 1;
+          this.showSpinner = false;
+        })
+        .then(() => {
+          Object.keys(this.$refs).forEach(element => {
+            var x = {};
+            this.collects = {};
+            Object.keys(this.$refs).forEach(element => {
+              x[element] = "";
+            });
+            this.collects = x;
+          });
+        })
+        .catch(error => {
+          console.log("Error");
+        });
+    }
   },
+
   mounted() {
     this.getDatas();
-  },
+  }
 };
 </script>
