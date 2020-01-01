@@ -160,18 +160,22 @@ export default {
       let url = this.host + "/get_categories.php";
       axios.get(url)
       .then(res=>{
-        this.jsonData = res.data.cat;
-        this.companies = res.data.company;
-        this.productId = parseInt(res.data.last_product[0].id) + 1;
+        this.jsonData    = res.data.cat;
+        this.companies   = res.data.company;
+        this.productId   = parseInt(res.data.last_product[0].id) + 1;
         this.showSpinner = false;
+        if(this.showSpinner !== true){
+          console.log(this.$refs);
+        }
       })
       .catch(error=>{
         console.log("Error");
       });
     },
   },
-  mounted() {
+  mounted: function() {
     this.getDatas();
+    
   },
 };
 </script>
