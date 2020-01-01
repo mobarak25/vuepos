@@ -18,6 +18,7 @@
             <tr>
               <th>Id</th>
               <th>Name</th>
+              <th>Category</th>
               <th>Company</th>
               <th>Description</th>
               <th>Qty</th>
@@ -32,12 +33,15 @@
               <td v-text="product.id"></td>
               <td v-text="product.product_name"></td>
               <td v-text="product.title"></td>
+              <td v-text="product.company"></td>
               <td v-text="product.description"></td>
               <td v-text="product.qty"></td>
               <td v-text="product.cost_price"></td>
               <td v-text="product.selling_price"></td>
               <td class="text-center">
-                <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
+                <router-link class="btn btn-sm btn-success" to="/Update_Product/'product.id'">
+                  <i class="fa fa-edit"></i>
+                </router-link>
                 <button @click="deleteProduct(product.id)" class="btn btn-sm btn-danger ml-2"><i class="fa fa-trash"></i></button>
               </td>
             </tr>
