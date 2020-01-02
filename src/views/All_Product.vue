@@ -39,7 +39,11 @@
               <td v-text="product.cost_price"></td>
               <td v-text="product.selling_price"></td>
               <td class="text-center">
-                <router-link class="btn btn-sm btn-success" to="/Update_Product/'product.id'">
+                <!-- <router-link class="btn btn-sm btn-success" to="/Update_Product/'.product.id.'">
+                  <i class="fa fa-edit"></i>
+                </router-link> -->
+
+                <router-link class="btn btn-sm btn-success" :to="{ path: '/Update_Product', query: { myprop: product.id }}">
                   <i class="fa fa-edit"></i>
                 </router-link>
                 <button @click="deleteProduct(product.id)" class="btn btn-sm btn-danger ml-2"><i class="fa fa-trash"></i></button>
@@ -67,6 +71,7 @@ export default {
   name: "All_Product",
   data() {
     return {
+      age:10,
       title: "Available Product",
       showSpinner: true,
       jsonData: null,

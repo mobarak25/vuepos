@@ -45,7 +45,9 @@
 					<li>
 						<router-link class="nav-link" to="/#">Help</router-link>
 					</li>
-					
+					<li>
+						<router-link class="nav-link" to="/Laundry">Laundry</router-link>
+					</li>
 				</ul>
 			
 			</div>
