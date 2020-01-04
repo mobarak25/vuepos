@@ -34,16 +34,13 @@ const routes = [
     component: () => import( '@/views/Category.vue' )
   },
   {
-    path: '/Laundry',
+    path: '/Laundry_path',
     name: 'Laundry',
     component: () => import( '@/views/Laundry.vue' )
   },
   {
-    path: '/Update_Product',
+    path: '/Update_Product/:id',
     name: 'Update_product',
-    props(route) {
-      return {  myprop: route.pageId.myprop }
-    },
     component: () => import( '@/views/Update_Product.vue' )
   }
   
