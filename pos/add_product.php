@@ -2,20 +2,12 @@
 
 	require_once('connection.php');
 
-
-
 	$catId = $_POST['catId'];
-
 	$name  = $_POST['name'];
-
 	$descr = $_POST['descr'];
-
 	$cost  = $_POST['cost'];
-
 	$sell  = $_POST['sell'];
-
 	$qty   = $_POST['qty'];
-
 	$company   = $_POST['company'];
 
 

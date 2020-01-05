@@ -139,7 +139,6 @@ export default {
         .post(url, formdata)
         .then(res => {
           this.getDatas();
-          event.target.reset();
         })
         .catch(err => {
           console.log("Error");

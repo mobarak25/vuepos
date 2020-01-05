@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <form v-else v-on:submit.prevent="submitData">
+    <form v-else v-on:submit.prevent="updateData">
       <div class="row align-items-center flex-wrap">
         <div class="col-lg-9">
           <div class="form-group row">
@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="col-lg-3">
-          <button type="submit" class="btn btn-lg btn-dark w-100 mb-3">SAVE PRODUCT</button>
+          <button type="submit" class="btn btn-lg btn-dark w-100 mb-3">UPDATE PRODUCT</button>
           <br />
           <router-link class="btn btn-lg btn-dark w-100" to="/All_Product">ALL PRODUCT</router-link>
         </div>
@@ -161,6 +161,25 @@ export default {
         .catch(err => {
           console.log("Error");
         });
+    },
+
+    updateData:function(){
+      let url = this.host + "/update_product.php?id=" + this.$route.params.id;
+
+      var formdata = new FormData();
+      formdata.append("name",    this.collects.pro_name);
+      formdata.append("catId",   this.collects.selected);
+      formdata.append("descr",   this.collects.pro_desc);
+      formdata.append("cost",    this.collects.pro_cost);
+      formdata.append("sell",    this.collects.pro_sell);
+      formdata.append("qty",     this.collects.pro_qty);
+      formdata.append("company", this.collects.company_id);
+
+      axios.post(url,formdata)
+      .then(res=>{
+        this.$route.path = "/All_Product";
+      })
+
     }
   },
 
