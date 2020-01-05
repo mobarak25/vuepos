@@ -85,6 +85,7 @@ export default {
         .get(url)
         .then(res => {
           this.jsonData = res.data;
+          console.log()
           this.showSpinner = false;
         })
         .catch(err => {

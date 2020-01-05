@@ -127,13 +127,13 @@ export default {
       let url = this.host + "/add_product.php";
 
       var formdata = new FormData();
-      formdata.append("name", this.collects.pro_name);
-      formdata.append("catId", this.collects.selected);
-      formdata.append("descr", this.collects.pro_desc);
-      formdata.append("cost", this.collects.pro_cost);
-      formdata.append("sell", this.collects.pro_sell);
-      formdata.append("qty", this.collects.pro_qty);
-      formdata.append("company", this.company_id);
+      formdata.append("name",    this.collects.pro_name);
+      formdata.append("catId",   this.collects.selected);
+      formdata.append("descr",   this.collects.pro_desc);
+      formdata.append("cost",    this.collects.pro_cost);
+      formdata.append("sell",    this.collects.pro_sell);
+      formdata.append("qty",     this.collects.pro_qty);
+      formdata.append("company", this.collects.company_id);
 
       axios
         .post(url, formdata)
