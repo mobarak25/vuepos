@@ -33,7 +33,7 @@
               <td v-text="product.id"></td>
               <td v-text="product.product_name"></td>
               <td v-text="product.title"></td>
-              <td v-text="product.company"></td>
+              <td v-text="product.company_name"></td>
               <td v-text="product.description"></td>
               <td v-text="product.qty"></td>
               <td v-text="product.cost_price"></td>
@@ -85,7 +85,6 @@ export default {
         .get(url)
         .then(res => {
           this.jsonData = res.data;
-          console.log()
           this.showSpinner = false;
         })
         .catch(err => {

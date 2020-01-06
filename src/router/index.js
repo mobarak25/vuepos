@@ -13,10 +13,7 @@ const routes = [
   {
     path: '/pos',
     name: 'pos',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/Pos.vue')
+    component: () => import('@/views/Pos.vue')
   },
   {
     path: '/Add_Product',
@@ -47,7 +44,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
- // mode: 'history',
+ mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

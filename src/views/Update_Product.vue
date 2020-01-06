@@ -149,14 +149,14 @@ export default {
           let cShort = this.collects;
           let jShort = this.jsonData;
 
-          cShort.pro_cost = jShort.cost_price;
-          cShort.pro_desc = jShort.description;
-          cShort.pro_name = jShort.product_name;
-          cShort.pro_qty = jShort.qty;
-          cShort.pro_sell = jShort.selling_price;
-          cShort.selected = jShort.cat_id;
+          cShort.pro_cost   = jShort.cost_price;
+          cShort.pro_desc   = jShort.description;
+          cShort.pro_name   = jShort.product_name;
+          cShort.pro_qty    = jShort.qty;
+          cShort.pro_sell   = jShort.selling_price;
+          cShort.selected   = jShort.cat_id;
           cShort.company_id = jShort.company;
-          this.productId = jShort.id
+          this.productId    = jShort.id
         })
         .catch(err => {
           console.log("Error");
@@ -177,7 +177,7 @@ export default {
 
       axios.post(url,formdata)
       .then(res=>{
-        this.$route.path = "/All_Product";
+        this.$router.push("/All_Product");
       })
 
     }
