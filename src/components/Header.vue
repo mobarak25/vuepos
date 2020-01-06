@@ -22,7 +22,9 @@
 									<li>
 										<router-link class="dropdown-item" to="/Category">Categories</router-link>	
 									</li>
-									<li><a class="dropdown-item" href="#">Sell out Product</a></li>
+									<li>
+										<router-link class="dropdown-item" :to="{name:'Sell_Out_Products'}">Sell out Products</router-link>
+									</li>
 									<li><a class="dropdown-item" href="#">Available Produt</a></li>
 								</ul>
 							</div>
