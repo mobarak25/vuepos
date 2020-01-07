@@ -11,7 +11,10 @@
 	$stm3 = $conn->query("SELECT * FROM company");
 	$rows3 = $stm3->fetchAll(PDO::FETCH_ASSOC);
 
-	echo json_encode(['singleProduct'=>$rows,'cats'=>$rows2,'getCompany'=>$rows3]);
+	$stm4 = $conn->query("SELECT * FROM product_name");
+	$rows4 = $stm4->fetchAll(PDO::FETCH_ASSOC);
+
+	echo json_encode(['singleProduct'=>$rows,'cats'=>$rows2,'getCompany'=>$rows3,'proName'=>$rows4]);
 
 	$conn=null;
 

@@ -24,8 +24,15 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Product Name:</label>
             <div class="col-sm-10">
-              <input ref="pro_name" v-model="collects.pro_name" type="text" class="form-control" />
-              {{collects.pro_name}}
+              
+              <select ref="pro_name" v-model="collects.pro_name" type="text" class="form-control">
+                <option value>--Select Name--</option>
+                <option
+                  v-for="(product_name, index) in product_names"
+                  :key="index"
+                  :value="product_name.id"
+                >{{product_name.product_name}}</option>
+              </select>
             </div>
           </div>
 
@@ -118,6 +125,7 @@ export default {
       showSpinner: true,
       jsonData: null,
       companies: null,
+      product_names:null,
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
@@ -151,6 +159,7 @@ export default {
         .then(res => {
           this.jsonData = res.data.cat;
           this.companies = res.data.company;
+          this.product_names = res.data.proName;
           this.productId = parseInt(res.data.last_product[0].id) + 1;
           this.showSpinner = false;
         })

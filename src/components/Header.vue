@@ -20,16 +20,16 @@
 										<router-link class="dropdown-item" to="/Add_Product">Add Product</router-link>	
 									</li>
 									<li>
-										<router-link class="dropdown-item" to="/Category">Categories</router-link>	
-									</li>
-									<li>
 										<router-link class="dropdown-item" :to="{name:'Sell_Out_Products'}">Sell out Products</router-link>
 									</li>
-									<li><a class="dropdown-item" href="#">Available Produt</a></li>
+									<li>
+										<router-link class="dropdown-item" to="/All_Product">Available Produts</router-link>
+									</li>
 								</ul>
 							</div>
 							<a class="dropdown-item" href="#">Search product</a>
-							<a class="dropdown-item" href="#">Product Name</a>
+							<router-link class="dropdown-item" :to="{name:'Add_Product_Name'}">Product Name</router-link>
+							<router-link class="dropdown-item" to="/Category">Categories</router-link>
 							<a class="dropdown-item" href="#">Company</a>
 							<a class="dropdown-item" href="#">Expense Detail</a>
 							<a class="dropdown-item" href="#">Add Costomer</a>

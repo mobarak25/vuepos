@@ -36,13 +36,9 @@
               <td v-text="product.company_name"></td>
               <td v-text="product.description"></td>
               <td v-text="product.qty"></td>
-              <td v-text="product.cost_price"></td>
-              <td v-text="product.selling_price"></td>
+              <td v-text="product.cost_price +'.00'"></td>
+              <td v-text="product.selling_price +'.00'"></td>
               <td class="text-center">
-                <!-- <router-link class="btn btn-sm btn-success" to="/Update_Product/'.product.id.'">
-                  <i class="fa fa-edit"></i>
-                </router-link> -->
-
                 <router-link class="btn btn-sm btn-success" :to="{name:'Update_product', params:{id: product.id}}">
                   <i class="fa fa-edit"></i>
                 </router-link>
