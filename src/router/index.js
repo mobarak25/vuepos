@@ -49,6 +49,11 @@ const routes = [
     path: '/Sell_Out_Products',
     name: 'Sell_Out_Products',
     component: () => import( '@/views/Sell_Out_Products.vue' )
+  },
+  {
+    path: '/Search_Product',
+    name: 'Search_Product',
+    component: () => import( '@/views/Product_Search.vue' )
   }
   
 ]

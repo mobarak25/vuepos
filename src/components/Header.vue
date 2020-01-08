@@ -27,7 +27,7 @@
 									</li>
 								</ul>
 							</div>
-							<a class="dropdown-item" href="#">Search product</a>
+							<router-link class="dropdown-item" :to="{name:'Search_Product'}">Search Product</router-link>
 							<router-link class="dropdown-item" :to="{name:'Add_Product_Name'}">Product Name</router-link>
 							<router-link class="dropdown-item" to="/Category">Categories</router-link>
 							<a class="dropdown-item" href="#">Company</a>
