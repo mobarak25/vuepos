@@ -14,13 +14,23 @@
     <div v-else class="row align-items-center flex-wrap">
       <div class="col-lg-12">
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Search By Product Name:</label>
+          <label class="col-sm-2 col-form-label">Product Name:</label>
           <div class="col-sm-4">
-            <input @keyup="filterProducts()" v-model="proName" type="text" class="form-control"/>
+            <input v-model="proName" type="text" class="form-control"/>
           </div>
-          <label class="col-sm-2 col-form-label text-right">Selling Price:</label>
+          <label class="col-sm-2 col-form-label text-right">By Company:</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control"/>
+            <select
+                ref="company_id"
+                type="text"
+                class="form-control"
+              >
+                <option value>--Select Company--</option>
+                <option
+                  v-for="(company, index) in this.jsonData"
+                  :key="index"
+                >{{company.company_name}}</option>
+              </select>
           </div>
         </div>
         <hr>
@@ -39,23 +49,23 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(product,index) in jsonData" :key="index">
-              <td v-text="product.id"></td>
-              <td v-text="product.product_name"></td>
-              <td v-text="product.title"></td>
-              <td v-text="product.company_name"></td>
-              <td v-text="product.description"></td>
-              <td v-text="product.qty"></td>
-              <td v-text="product.cost_price +'.00'"></td>
-              <td v-text="product.selling_price +'.00'"></td>
+            <tr v-for="(filterProduct,index) in filterProducts" :key="index">
+              <td v-text="filterProduct.id"></td>
+              <td v-text="filterProduct.product_name"></td>
+              <td v-text="filterProduct.title"></td>
+              <td v-text="filterProduct.company_name"></td>
+              <td v-text="filterProduct.description"></td>
+              <td v-text="filterProduct.qty"></td>
+              <td v-text="filterProduct.cost_price +'.00'"></td>
+              <td v-text="filterProduct.selling_price +'.00'"></td>
               <td class="text-center">
                 <router-link
                   class="btn btn-sm btn-success"
-                  :to="{name:'Update_product', params:{id: product.id}}"
+                  :to="{name:'Update_product', params:{id: filterProduct.id}}"
                 >
                   <i class="fa fa-edit"></i>
                 </router-link>
-                <button @click="deleteProduct(product.id)" class="btn btn-sm btn-danger ml-2">
+                <button @click="deleteProduct(filterProduct.id)" class="btn btn-sm btn-danger ml-2">
                   <i class="fa fa-trash"></i>
                 </button>
               </td>
@@ -69,7 +79,6 @@
 
 <script>
 window.axios = require("axios");
-//window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 let axiosConfig = {
   headers: {
@@ -82,40 +91,59 @@ export default {
   name: "Product_Search",
   data() {
     return {
-      title: "Available Product",
+      title: "Search Product",
       proName:"",
       showSpinner: true,
       jsonData: null,
-      filterData: [],
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
 
   computed:{
-    
-  },
-
-  methods: {
     filterProducts:function() {
       if(this.proName){
-        this.jsonData = this.jsonData.filter(element => {
+        return this.jsonData.filter(element => {
           return element.product_name.toLowerCase().includes(this.proName.toLowerCase());
         });
       }else{
-        this.jsonData=this.getProducts();
+        return this.jsonData
       }
     },
+  },
+
+  methods: {
+    
     getProducts: function() {
-      let url = this.host + "/get_products.php";
-      axios
-        .get(url)
-        .then(res => {
-          this.jsonData = res.data;
-          this.showSpinner = false;
-        })
-        .catch(err => {
+      let url = this.host
+
+      function getUserAccount() {
+        return axios.get(url + "/get_products.php");
+      }
+
+      function getUserPermissions() {
+        return axios.get(url + "/get_companies.php");
+      }
+
+      axios.all([getUserPermissions(),getUserAccount()])
+      .then(axios.spread(res=>{
+        console.log(res);
+        // this.jsonData = res.data;
+        // this.showSpinner = false;
+      
+      }))
+      .catch(err => {
           console.log("Error");
         });
+    
+      // axios
+      //   .get(url)
+      //   .then(res => {
+      //     this.jsonData = res.data;
+      //     this.showSpinner = false;
+      //   })
+      //   .catch(err => {
+      //     console.log("Error");
+      //   });
     },
     deleteProduct: function(getId) {
       var getConfirm = confirm("Are you sure, You want to delete ? ");
