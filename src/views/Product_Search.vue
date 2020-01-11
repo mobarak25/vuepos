@@ -16,24 +16,20 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Product Name:</label>
           <div class="col-sm-4">
-            <input v-model="proName" type="text" class="form-control"/>
+            <input v-model="proName" type="text" class="form-control" />
           </div>
           <label class="col-sm-2 col-form-label text-right">By Company:</label>
           <div class="col-sm-4">
-            <select
-                ref="company_id"
-                type="text"
-                class="form-control"
-              >
-                <option value>--Select Company--</option>
-                <option
-                  v-for="(company, index) in this.jsonData"
-                  :key="index"
-                >{{company.company_name}}</option>
-              </select>
+            <select type="text" class="form-control" v-model="company_select">
+              <option value>--Select Company--</option>
+              <option
+                v-for="(company, index) in this.companies"
+                :key="index"
+              >{{company.company_name}}</option>
+            </select>
           </div>
         </div>
-        <hr>
+        <hr />
         <table class="table table-hover table-bordered table-striped">
           <thead>
             <tr>
@@ -92,29 +88,45 @@ export default {
   data() {
     return {
       title: "Search Product",
-      proName:"",
+      proName: "",
       showSpinner: true,
       jsonData: null,
+      companies: "",
+      company_select: "",
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
 
-  computed:{
-    filterProducts:function() {
-      if(this.proName){
+  computed: {
+    filterProducts: function() {
+      if (this.proName && ! this.company_select) {
         return this.jsonData.filter(element => {
-          return element.product_name.toLowerCase().includes(this.proName.toLowerCase());
-        });
-      }else{
-        return this.jsonData
+          let byName = element.product_name.toLowerCase().includes(this.proName.toLowerCase());
+          return byName;
+        })
       }
-    },
+      else if (this.proName && this.company_select) {
+        return this.jsonData.filter(element => {
+          let byName = element.product_name.toLowerCase().includes(this.proName.toLowerCase());
+          let byCompany = element.company_name.toLowerCase().includes(this.company_select.toLowerCase());
+          return byName && byCompany;
+        })
+      }
+      else if (!this.proName && this.company_select) {
+        return this.jsonData.filter(element => {
+          let byCompany = element.company_name.toLowerCase().includes(this.company_select.toLowerCase());
+          return byCompany;
+        })
+      } 
+      else{
+        return this.jsonData;
+      }
+    }
   },
 
   methods: {
-    
     getProducts: function() {
-      let url = this.host
+      let url = this.host;
 
       function getUserAccount() {
         return axios.get(url + "/get_products.php");
@@ -124,26 +136,18 @@ export default {
         return axios.get(url + "/get_companies.php");
       }
 
-      axios.all([getUserPermissions(),getUserAccount()])
-      .then(axios.spread(res=>{
-        console.log(res);
-        // this.jsonData = res.data;
-        // this.showSpinner = false;
-      
-      }))
-      .catch(err => {
+      axios
+        .all([getUserAccount(), getUserPermissions()])
+        .then(
+          axios.spread((res, company) => {
+            this.jsonData = res.data;
+            this.companies = company.data;
+            this.showSpinner = false;
+          })
+        )
+        .catch(err => {
           console.log("Error");
         });
-    
-      // axios
-      //   .get(url)
-      //   .then(res => {
-      //     this.jsonData = res.data;
-      //     this.showSpinner = false;
-      //   })
-      //   .catch(err => {
-      //     console.log("Error");
-      //   });
     },
     deleteProduct: function(getId) {
       var getConfirm = confirm("Are you sure, You want to delete ? ");
