@@ -31,7 +31,7 @@
 							<router-link class="dropdown-item" :to="{name:'Add_Product_Name'}">Product Name</router-link>
 							<router-link class="dropdown-item" to="/Category">Categories</router-link>
 							<router-link class="dropdown-item" :to="{name:'Company'}">Company</router-link>
-							<a class="dropdown-item" href="#">Expense Detail</a>
+							<router-link class="dropdown-item" :to="{name:'Expense'}">Expense Detail</router-link>
 							<a class="dropdown-item" href="#">Add Costomer</a>
 							<a class="dropdown-item" href="#">Add Suppliers</a>
 							<a class="dropdown-item" href="#">Exit</a>
