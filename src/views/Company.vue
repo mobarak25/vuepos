@@ -19,14 +19,13 @@
             <input v-model="company" type="text" class="form-control" />
           </div>
           <div class="col-sm-4">
-            <button @click="addCom(company)" class="btn btn-dark mb-3">
-              SAVE COMPANY
-            </button>
+            <button @click="addCom(company)" class="btn btn-dark mb-3">SAVE COMPANY</button>
           </div>
         </div>
       </div>
+
       <div class="col-lg-12">
-        <table class="table table-hover table-bordered table-striped ">
+        <table class="table table-hover table-bordered table-striped">
           <thead>
             <tr>
               <th>Id</th>
@@ -40,8 +39,8 @@
               <td v-text="company.company_name"></td>
               <td>
                 <button class="btn btn-sm btn-danger" @click.prevent="deleteCom(company.id)">
-					<i class="fa fa-trash"></i>
-				</button>
+                  <i class="fa fa-trash"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -68,7 +67,7 @@ export default {
       title: "Available Company",
       showSpinner: true,
       jsonData: null,
-      host:"https://vuepos.000webhostapp.com/pos",
+      host: "https://vuepos.000webhostapp.com/pos",
       company: ""
     };
   },
