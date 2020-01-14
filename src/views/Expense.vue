@@ -23,12 +23,11 @@
             <label class="col-sm-2 col-form-label">Expense Type:</label>
             <div class="col-sm-3">
               <select ref="exp_type" v-model="collects.exp_type" type="text" class="form-control">
-                <option value>--Select Name--</option>
+                <option value>--Select Type--</option>
                 <option
-                  v-for="(product_name, index) in product_names"
+                  v-for="(expenseType, index) in jsonData"
                   :key="index"
-                  :value="product_name.id"
-                >{{product_name.product_name}}</option>
+                >{{expenseType.name}}</option>
               </select>
             </div>
 
@@ -106,7 +105,7 @@ export default {
         });
     },
     getDatas: function() {
-      let url = this.host + "/get_expense.php";
+      let url = this.host + "/get_expense_type.php";
       axios
         .get(url)
         .then(res => {
