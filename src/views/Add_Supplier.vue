@@ -12,54 +12,64 @@
     </div>
 
     <form v-else v-on:submit.prevent="submitData">
-      <div class="row align-items-center flex-wrap">
-        <div class="col-lg-9">
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Supplier ID:</label>
-            <div class="col-sm-10">
-              <input :value="supplierID" type="text" class="form-control" readonly />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Supplier Name:</label>
-            <div class="col-sm-10">
-              <input
-                ref="supplirName"
-                v-model="collects.supplirName"
-                type="text"
-                class="form-control"
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Address:</label>
-            <div class="col-sm-10">
-              <textarea ref="address" v-model="collects.address" class="form-control" rows="4"></textarea>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Contact No:</label>
-            <div class="col-sm-10">
-              <input ref="contactNo" v-model="collects.contactNo" type="text" class="form-control" />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Remarks:</label>
-            <div class="col-sm-10">
-              <textarea ref="remarks" v-model="collects.remarks" class="form-control" rows="4"></textarea>
-            </div>
-          </div>
+      <div class="row form-group">
+        <label class="col-sm-2 col-form-label">Supplier ID:</label>
+        <div class="col-sm-4">
+          <input :value="supplierID" type="text" class="form-control" readonly />
         </div>
-        <div class="col-lg-3">
-          <button type="submit" class="btn btn-lg btn-dark w-100 mb-3">Save Supplier</button>
-          <br />
-          <router-link class="btn btn-lg btn-dark w-100" to="/All_Product">All Suppliers</router-link>
+        <label class="col-sm-2 col-form-label">Supplier Name:</label>
+        <div class="col-sm-4">
+          <input ref="supplirName" v-model="collects.supplirName" type="text" class="form-control" />
         </div>
       </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Address:</label>
+        <div class="col-sm-4">
+          <textarea ref="address" v-model="collects.address" class="form-control" rows="2"></textarea>
+        </div>
+        <label class="col-sm-2 col-form-label">Remarks:</label>
+        <div class="col-sm-4">
+          <textarea ref="remarks" v-model="collects.remarks" class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Contact No:</label>
+        <div class="col-sm-4">
+          <input ref="contactNo" v-model="collects.contactNo" type="text" class="form-control" />
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-lg-4">
+          <button type="submit" class="btn btn-dark mb-3">Save Supplier</button>
+        </div>
+      </div>
+      <table class="table table-hover table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Contact No.</th>
+            <th>Remarks</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(supplier,index) in jsonData" :key="index">
+            <td v-text="supplier.id"></td>
+            <td v-text="supplier.name"></td>
+            <td v-text="supplier.address"></td>
+            <td v-text="supplier.contact_no"></td>
+            <td v-text="supplier.remarks"></td>
+
+            <td class="text-center">
+              <button @click="deleteProduct(supplier.id)" class="btn btn-sm btn-danger ml-2">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </form>
   </div>
 </template>
@@ -82,7 +92,7 @@ export default {
       collects: {},
       supplierID: "",
       showSpinner: false,
-      niceData: "",
+      jsonData: null,
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
@@ -99,18 +109,23 @@ export default {
       axios
         .post(url, formdata)
         .then(res => {
-          this.niceData;
           alert("Data Submit Successfully");
+          this.getSuppliers();
         })
-
         .catch(err => {
           console.log("Error");
         });
+    },
+    getSuppliers: function() {
+      let url = this.host + "/get_suppliers.php";
+      axios.get(url).then(res => {
+        this.jsonData = res.data;
+      });
     }
   },
 
   mounted() {
-    //this.getDatas();
+    this.getSuppliers();
 
     this.niceData = Object.keys(this.$refs).forEach(element => {
       var x = {};

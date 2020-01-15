@@ -2,3 +2,5 @@
 get https://vuepos.000webhostapp.com/pos/get_categories.php
 ###
 get https://vuepos.000webhostapp.com/pos/get_product_names.php
+###
+get https://vuepos.000webhostapp.com/pos/get_suppliers.php
