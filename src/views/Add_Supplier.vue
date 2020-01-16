@@ -43,34 +43,34 @@
           <button type="submit" class="btn btn-dark mb-3">Save Supplier</button>
         </div>
       </div>
-      <table class="table table-hover table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Contact No.</th>
-            <th>Remarks</th>
-            <th class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(supplier,index) in jsonData" :key="index">
-            <td v-text="supplier.id"></td>
-            <td v-text="supplier.name"></td>
-            <td v-text="supplier.address"></td>
-            <td v-text="supplier.contact_no"></td>
-            <td v-text="supplier.remarks"></td>
-
-            <td class="text-center">
-              <button @click="deleteProduct(supplier.id)" class="btn btn-sm btn-danger ml-2">
-                <i class="fa fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </form>
+    <table class="table table-hover table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Contact No.</th>
+          <th>Remarks</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(supplier,index) in jsonData" :key="index">
+          <td v-text="supplier.id"></td>
+          <td v-text="supplier.name"></td>
+          <td v-text="supplier.address"></td>
+          <td v-text="supplier.contact_no"></td>
+          <td v-text="supplier.remarks"></td>
+
+          <td class="text-center">
+            <button @click="deleteSupplier(supplier.id)" class="btn btn-sm btn-danger ml-2">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -97,6 +97,18 @@ export default {
     };
   },
   methods: {
+
+    dataBulder:function(){
+      this.niceData = Object.keys(this.$refs).forEach(element => {
+        var x = {};
+        this.collects = {};
+        Object.keys(this.$refs).forEach(element => {
+          x[element] = "";
+        });
+        this.collects = x;
+      });
+    },
+
     submitData: function(event) {
       let url = this.host + "/add_supplier.php";
 
@@ -111,30 +123,39 @@ export default {
         .then(res => {
           alert("Data Submit Successfully");
           this.getSuppliers();
+          this.dataBulder();
         })
         .catch(err => {
           console.log("Error");
         });
     },
+
     getSuppliers: function() {
       let url = this.host + "/get_suppliers.php";
       axios.get(url).then(res => {
         this.jsonData = res.data;
       });
+    },
+
+    deleteSupplier:function(singleId){
+      let url = this.host + "/delete_supplier.php";
+      var formdata = new FormData();
+      formdata.append("id", singleId);
+
+      axios
+      .post(url, formdata)
+      .then(res=>{
+        this.getSuppliers();
+      })
+
     }
   },
 
   mounted() {
     this.getSuppliers();
+    this.dataBulder();
 
-    this.niceData = Object.keys(this.$refs).forEach(element => {
-      var x = {};
-      this.collects = {};
-      Object.keys(this.$refs).forEach(element => {
-        x[element] = "";
-      });
-      this.collects = x;
-    });
+    
   }
 };
 </script>
