@@ -19,7 +19,12 @@
           </div>
           <label class="col-sm-2 col-form-label">Supplier Name:</label>
           <div class="col-sm-4">
-            <input ref="supplirName" v-model="collects.supplirName" type="text" class="form-control" />
+            <input
+              ref="supplirName"
+              v-model="collects.supplirName"
+              type="text"
+              class="form-control"
+            />
           </div>
         </div>
         <div class="form-group row">
@@ -98,8 +103,7 @@ export default {
     };
   },
   methods: {
-
-    dataBulder:function(){
+    dataBulder: function() {
       this.niceData = Object.keys(this.$refs).forEach(element => {
         var x = {};
         this.collects = {};
@@ -135,29 +139,27 @@ export default {
       let url = this.host + "/get_suppliers.php";
       axios.get(url).then(res => {
         this.jsonData = res.data;
-          this.showSpinner = false;
+        this.showSpinner = false;
       });
     },
 
-    deleteSupplier:function(singleId){
-      let url = this.host + "/delete_supplier.php";
-      var formdata = new FormData();
-      formdata.append("id", singleId);
+    deleteSupplier: function(singleId) {
+      var getConfirm = confirm("Are you sure, You want to delete ? ");
+      if (singleId && getConfirm !== false) {
+        let url = this.host + "/delete_supplier.php";
+        var formdata = new FormData();
+        formdata.append("id", singleId);
 
-      axios
-      .post(url, formdata)
-      .then(res=>{
-        this.getSuppliers();
-      })
-
+        axios.post(url, formdata).then(res => {
+          this.getSuppliers();
+        });
+      }
     }
   },
 
   mounted() {
     this.getSuppliers();
     this.dataBulder();
-
-    
   }
 };
 </script>

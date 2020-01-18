@@ -24,10 +24,7 @@
             <div class="col-sm-3">
               <select ref="exp_type" v-model="collects.exp_type" type="text" class="form-control">
                 <option value>--Select Type--</option>
-                <option
-                  v-for="(expenseType, index) in jsonData"
-                  :key="index"
-                >{{expenseType.name}}</option>
+                <option v-for="(expenseType, index) in jsonData" :key="index">{{expenseType.name}}</option>
               </select>
             </div>
 
@@ -40,7 +37,8 @@
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Date:</label>
             <div class="col-sm-2">
-              <input ref="exp_date" v-model="collects.exp_date"  type="text" class="form-control"/>
+              <datepicker :format="customFormatter" v-model="date" class="form-control"></datepicker>
+              <!-- <input ref="exp_date" v-model="collects.exp_date" type="text" class="form-control" /> -->
             </div>
 
             <label class="col-sm-2 col-form-label">Name:</label>
@@ -49,13 +47,11 @@
             </div>
             <label class="col-sm-1 col-form-label"></label>
             <div class="col-sm-2">
-               
               <button class="btn btn-dark">Save Expense</button>
             </div>
           </div>
-          <hr>
+          <hr />
         </div>
-        
       </div>
     </form>
   </div>
@@ -63,6 +59,8 @@
 
 <script>
 window.axios = require("axios");
+import moment from "moment";
+import Datepicker from "vuejs-datepicker";
 
 let axiosConfig = {
   headers: {
@@ -78,22 +76,25 @@ export default {
       title: "Expense Entry",
 
       collects: {},
-
+      date: null,
       expenseId: null,
       showSpinner: true,
       jsonData: null,
-      companies: null,
-      product_names:null,
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
+  components: {
+    Datepicker
+  },
   methods: {
-
     submitData: function(event) {
-      let url = this.host + "/add_product.php";
+      let url = this.host + "/add_expense.php";
 
       var formdata = new FormData();
-      formdata.append("name",    this.collects.pro_name);
+      formdata.append("name", this.collects.name);
+      formdata.append("cost", this.collects.cost);
+      formdata.append("type", this.collects.exp_type);
+      formdata.append("expDate", this.date);
 
       axios
         .post(url, formdata)
@@ -111,9 +112,6 @@ export default {
         .then(res => {
           this.jsonData = res.data;
           this.showSpinner = false;
-
-          //this.expenseId = parseInt(res.data.last_product[0].id) + 1;
-          //this.showSpinner = false;
         })
         .then(() => {
           Object.keys(this.$refs).forEach(element => {
@@ -128,6 +126,9 @@ export default {
         .catch(error => {
           console.log("Error");
         });
+    },
+    customFormatter(date) {
+      return moment(date).format("DD/MM/YYYY");
     }
   },
 
