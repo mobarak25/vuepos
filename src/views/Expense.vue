@@ -77,6 +77,7 @@ export default {
 
       collects: {},
       date: null,
+      niceDate: "",
       expenseId: null,
       showSpinner: true,
       jsonData: null,
@@ -129,6 +130,13 @@ export default {
     },
     customFormatter(date) {
       return moment(date).format("DD/MM/YYYY");
+    }
+  },
+
+  watch: {
+    date: function(val, newVal) {
+      this.niceDate =
+        val.getDate() + "/" + (val.getMonth() + 1) + "/" + val.getFullYear();
     }
   },
 
