@@ -19,14 +19,12 @@
             <input v-model="category" type="text" class="form-control" />
           </div>
           <div class="col-sm-4">
-            <button @click="addCat(category)" class="btn btn-dark mb-3">
-              SAVE Category
-            </button>
+            <button @click="addCat(category)" class="btn btn-dark mb-3">SAVE Category</button>
           </div>
         </div>
       </div>
       <div class="col-lg-12">
-        <table class="table table-hover table-bordered table-striped ">
+        <table class="table table-hover table-bordered table-striped">
           <thead>
             <tr>
               <th>Id</th>
@@ -40,8 +38,8 @@
               <td v-text="category.title"></td>
               <td>
                 <button class="btn btn-sm btn-danger" @click.prevent="deleteCat(category.id)">
-					<i class="fa fa-trash"></i>
-				</button>
+                  <i class="fa fa-trash"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -68,7 +66,7 @@ export default {
       title: "Available Category",
       showSpinner: true,
       jsonData: null,
-      host:"https://vuepos.000webhostapp.com/pos",
+      host: "https://vuepos.000webhostapp.com/pos",
       category: ""
     };
   },

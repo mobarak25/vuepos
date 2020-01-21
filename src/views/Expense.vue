@@ -10,50 +10,71 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
+    <div v-else>
+      <form v-on:submit.prevent="submitData">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Expense Id:</label>
+              <div class="col-sm-2">
+                <input :value="expenseId" type="text" class="form-control" readonly />
+              </div>
 
-    <form v-else v-on:submit.prevent="submitData">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Expense Id:</label>
-            <div class="col-sm-2">
-              <input :value="expenseId" type="text" class="form-control" readonly />
+              <label class="col-sm-2 col-form-label">Expense Type:</label>
+              <div class="col-sm-3">
+                <select ref="exp_type" v-model="collects.exp_type" type="text" class="form-control">
+                  <option value>--Select Type--</option>
+                  <option v-for="(expenseType, index) in jsonData" :key="index">{{expenseType.name}}</option>
+                </select>
+              </div>
+
+              <label class="col-sm-1 col-form-label">Cost:</label>
+              <div class="col-sm-2">
+                <input ref="cost" v-model="collects.cost" type="text" class="form-control" />
+              </div>
             </div>
 
-            <label class="col-sm-2 col-form-label">Expense Type:</label>
-            <div class="col-sm-3">
-              <select ref="exp_type" v-model="collects.exp_type" type="text" class="form-control">
-                <option value>--Select Type--</option>
-                <option v-for="(expenseType, index) in jsonData" :key="index">{{expenseType.name}}</option>
-              </select>
-            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Date:</label>
+              <div class="col-sm-2">
+                <datepicker :format="customFormatter" v-model="date" class="customdate" data-123></datepicker>
+                <!-- <input ref="exp_date" v-model="collects.exp_date" type="text" class="form-control" /> -->
+              </div>
 
-            <label class="col-sm-1 col-form-label">Cost:</label>
-            <div class="col-sm-2">
-              <input ref="cost" v-model="collects.cost" type="text" class="form-control" />
+              <label class="col-sm-2 col-form-label">Name:</label>
+              <div class="col-sm-3">
+                <input ref="name" v-model="collects.name" type="text" class="form-control" />
+              </div>
+              <label class="col-sm-1 col-form-label"></label>
+              <div class="col-sm-2">
+                <button class="btn btn-dark">Save Expense</button>
+              </div>
             </div>
+            <hr />
           </div>
-
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Date:</label>
-            <div class="col-sm-2">
-              <datepicker :format="customFormatter" v-model="date" class="customdate" data-123></datepicker>
-              <!-- <input ref="exp_date" v-model="collects.exp_date" type="text" class="form-control" /> -->
-            </div>
-
-            <label class="col-sm-2 col-form-label">Name:</label>
-            <div class="col-sm-3">
-              <input ref="name" v-model="collects.name" type="text" class="form-control" />
-            </div>
-            <label class="col-sm-1 col-form-label"></label>
-            <div class="col-sm-2">
-              <button class="btn btn-dark">Save Expense</button>
-            </div>
-          </div>
-          <hr />
         </div>
-      </div>
-    </form>
+      </form>
+      <table class="table table-hover table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Expense type</th>
+            <th>Cost</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(expense, index) in jsonExpense" :key="index">
+            <td v-text="expense.id"></td>
+            <td v-text="expense.expDame"></td>
+            <td v-text="expense.expense_type"></td>
+            <td v-text="expense.cost"></td>
+            <td v-text="expense.expDate"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -81,6 +102,7 @@ export default {
       expenseId: null,
       showSpinner: true,
       jsonData: null,
+      jsonExpense: null,
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
@@ -95,18 +117,19 @@ export default {
       formdata.append("name", this.collects.name);
       formdata.append("cost", this.collects.cost);
       formdata.append("type", this.collects.exp_type);
-      formdata.append("expDate", this.date);
+      formdata.append("expDate", this.niceDate);
 
       axios
         .post(url, formdata)
         .then(res => {
-          this.getDatas();
+          this.getExpenseType();
+          this.getExpense();
         })
         .catch(err => {
           console.log("Error");
         });
     },
-    getDatas: function() {
+    getExpenseType: function() {
       let url = this.host + "/get_expense_type.php";
       axios
         .get(url)
@@ -123,6 +146,19 @@ export default {
             });
             this.collects = x;
           });
+          this.niceDate = null;
+          this.date = null;
+        })
+        .catch(error => {
+          console.log("Error");
+        });
+    },
+    getExpense: function() {
+      let url = this.host + "/get_expense.php";
+      axios
+        .get(url)
+        .then(res => {
+          this.jsonExpense = res.data;
         })
         .catch(error => {
           console.log("Error");
@@ -141,7 +177,8 @@ export default {
   },
 
   mounted() {
-    this.getDatas();
+    this.getExpenseType();
+    this.getExpense();
   }
 };
 </script>
