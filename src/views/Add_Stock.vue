@@ -18,27 +18,85 @@
             <div class="col-lg-6">
               <div class="border p-3">
                 <h6 class="m-0 pb-3">Stock & Supplier Details</h6>
-                <div class="form-group row input-group-sm">
-                  <label class="col-sm-3 col-form-label">Stock ID:</label>
-                  <div class="col-sm-9">
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Stock ID:</label>
+                  <div class="col-sm-8 input-group-sm">
                     <input :value="productId" type="text" class="form-control" readonly />
                   </div>
                 </div>
-                <div class="form-group row input-group-sm">
-                  <label class="col-sm-3 col-form-label">Date:</label>
-                  <div class="col-sm-9 input-group-sm">
-                    <input type="text" class="form-control" readonly />
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Date:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Supplier Name</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <select class="form-control">
+                      <option
+                        v-for="(supplier, index) in suppliers"
+                        :key="index"
+                        v-text="supplier.name"
+                      ></option>
+                    </select>
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Supplier ID:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Address:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <textarea class="form-control" rows="2"></textarea>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="border p-3">
-                <h6 class="m-0 pb-3">Stock & Supplier Details</h6>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Product Id:</label>
-                  <div class="col-sm-9">
-                    <input :value="productId" type="text" class="form-control" readonly />
+                <h6 class="m-0 pb-3">Product Details</h6>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Product Name</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <select class="form-control">
+                      <option>Product name</option>
+                      <option>Product name</option>
+                      <option>Product name</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Product ID:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" readonly />
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Quantity</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Price per Unit:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Selling Price:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="pb-1 row">
+                  <label class="col-sm-4 col-form-label">Total Amount:</label>
+                  <div class="col-sm-8 input-group-sm">
+                    <input type="text" class="form-control" />
                   </div>
                 </div>
               </div>
@@ -76,7 +134,7 @@ export default {
 
       productId: null,
       showSpinner: true,
-      jsonData: null,
+      suppliers: null,
       companies: null,
       product_names: null,
       host: "https://vuepos.000webhostapp.com/pos"
@@ -105,14 +163,15 @@ export default {
         });
     },
     getDatas: function() {
-      let url = this.host + "/get_categories.php";
+      let url = this.host + "/get_suppliers.php";
       axios
         .get(url)
         .then(res => {
-          this.jsonData = res.data.cat;
-          this.companies = res.data.company;
-          this.product_names = res.data.proName;
-          this.productId = parseInt(res.data.last_product[0].id) + 1;
+          console.log(res);
+          this.suppliers = res.data;
+          //this.companies = res.data.company;
+          //this.product_names = res.data.proName;
+          //this.productId = parseInt(res.data.last_product[0].id) + 1;
           this.showSpinner = false;
         })
         .then(() => {

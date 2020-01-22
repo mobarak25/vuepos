@@ -8,7 +8,7 @@
         <a href>Cashier</a>
       </li>
       <li>
-        <a href>Suppliers</a>
+        <router-link class="dropdown-item" :to="{name:'Add_Supplier'}">Suppliers</router-link>
       </li>
       <li>
         <a href>Coustomers</a>
