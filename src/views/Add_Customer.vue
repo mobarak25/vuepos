@@ -15,7 +15,7 @@
         <div class="row form-group">
           <label class="col-sm-2 col-form-label">Customer ID:</label>
           <div class="col-sm-4">
-            <input :value="customerID" type="text" class="form-control" readonly />
+            <input type="text" class="form-control" readonly />
           </div>
           <label class="col-sm-2 col-form-label">Customer Name:</label>
           <div class="col-sm-4">
@@ -27,7 +27,7 @@
           <div class="col-sm-4">
             <input ref="contactNo" v-model="collects.phone" type="text" class="form-control" />
           </div>
-          <label class="col-sm-2 col-form-label">Emai:</label>
+          <label class="col-sm-2 col-form-label">Email:</label>
           <div class="col-sm-4">
             <input ref="email" v-model="collects.email" type="text" class="form-control" />
           </div>
@@ -90,25 +90,15 @@ export default {
   data() {
     return {
       title: "Customer Entry",
+
       collects: {},
-      customerID: "",
       showSpinner: true,
       jsonData: null,
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
-  methods: {
-    dataBulder: function() {
-      Object.keys(this.$refs).forEach(element => {
-        var x = {};
-        this.collects = {};
-        Object.keys(this.$refs).forEach(element => {
-          x[element] = "";
-        });
-        this.collects = x;
-      });
-    },
 
+  methods: {
     submitData: function(event) {
       let url = this.host + "/add_customer.php";
 
@@ -121,40 +111,55 @@ export default {
       axios
         .post(url, formdata)
         .then(res => {
-          alert("Data Submit Successfully");
-          this.getSuppliers();
-          this.dataBulder();
+          this.getCustomer();
         })
         .catch(err => {
           console.log("Error");
         });
     },
-
-    getSuppliers: function() {
+    getCustomer: function() {
       let url = this.host + "/get_customer.php";
-      axios.get(url).then(res => {
-        this.jsonData = res.data;
-        this.showSpinner = false;
-      });
-    },
-
-    deleteSupplier: function(singleId) {
-      var getConfirm = confirm("Are you sure, You want to delete ? ");
-      if (singleId && getConfirm !== false) {
-        let url = this.host + "/delete_supplier.php";
-        var formdata = new FormData();
-        formdata.append("id", singleId);
-
-        axios.post(url, formdata).then(res => {
-          this.getSuppliers();
+      axios
+        .get(url)
+        .then(res => {
+          this.jsonData = res.data;
+          this.showSpinner = false;
+        })
+        .then(() => {
+          Object.keys(this.$refs).forEach(element => {
+            var x = {};
+            this.collects = {};
+            Object.keys(this.$refs).forEach(element => {
+              x[element] = "";
+            });
+            this.collects = x;
+          });
+        })
+        .catch(error => {
+          console.log("Error");
         });
+    },
+    deleteCustomer(id) {
+      var fonfirm = confirm("Are you sure, Want to delete?");
+      if (fonfirm == true) {
+        let url = this.host + "/add_customer.php";
+        var formdata = new FormData();
+        formdata.append("id", id);
+
+        axios
+          .post(url, formdata)
+          .then(res => {
+            this.getCustomer();
+          })
+          .catch(error => {
+            console.log("Error");
+          });
       }
     }
   },
 
   mounted() {
-    this.dataBulder();
-    this.getSuppliers();
+    this.getCustomer();
   }
 };
 </script>
