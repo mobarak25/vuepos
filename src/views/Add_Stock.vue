@@ -38,7 +38,7 @@
                       class="form-control"
                       v-model="selectedSupplier"
                     >
-                      <option>Select Name</option>
+                      <option disabled value>Please select one</option>
                       <option
                         v-for="(supplier, index) in suppliers"
                         :key="index"
