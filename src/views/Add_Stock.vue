@@ -27,17 +27,23 @@
                 <div class="pb-1 row">
                   <label class="col-sm-4 col-form-label">Date:</label>
                   <div class="col-sm-8 input-group-sm">
-                    <input type="text" class="form-control" />
+                    <datepicker :format="customFormatter" v-model="date" class="customdate"></datepicker>
                   </div>
                 </div>
                 <div class="pb-1 row">
                   <label class="col-sm-4 col-form-label">Supplier Name</label>
                   <div class="col-sm-8 input-group-sm">
-                    <select class="form-control">
+                    <select
+                      @change="fillSupplier()"
+                      class="form-control"
+                      v-model="selectedSupplier"
+                    >
+                      <option>Select Name</option>
                       <option
                         v-for="(supplier, index) in suppliers"
                         :key="index"
                         v-text="supplier.name"
+                        :value="supplier.id"
                       ></option>
                     </select>
                   </div>
@@ -45,13 +51,19 @@
                 <div class="pb-1 row">
                   <label class="col-sm-4 col-form-label">Supplier ID:</label>
                   <div class="col-sm-8 input-group-sm">
-                    <input type="text" class="form-control" />
+                    <input ref="supId" v-model="collects.supId" type="text" class="form-control" />
                   </div>
                 </div>
+
                 <div class="pb-1 row">
                   <label class="col-sm-4 col-form-label">Address:</label>
                   <div class="col-sm-8 input-group-sm">
-                    <textarea class="form-control" rows="2"></textarea>
+                    <textarea
+                      ref="supplierAddress"
+                      v-model="collects.supplierAddress"
+                      class="form-control"
+                      rows="2"
+                    ></textarea>
                   </div>
                 </div>
               </div>
@@ -116,6 +128,8 @@
 
 <script>
 window.axios = require("axios");
+import moment from "moment";
+import Datepicker from "vuejs-datepicker";
 
 let axiosConfig = {
   headers: {
@@ -125,16 +139,19 @@ let axiosConfig = {
 };
 
 export default {
-  name: "Add_Product",
+  name: "Add_Stock",
   data() {
     return {
       title: "Stock Entry",
 
       collects: {},
+      date: "",
+      niceDate: "",
 
       productId: null,
       showSpinner: true,
       suppliers: null,
+      selectedSupplier: "",
       companies: null,
       product_names: null,
       host: "https://vuepos.000webhostapp.com/pos"
@@ -167,7 +184,6 @@ export default {
       axios
         .get(url)
         .then(res => {
-          console.log(res);
           this.suppliers = res.data;
           //this.companies = res.data.company;
           //this.product_names = res.data.proName;
@@ -187,6 +203,26 @@ export default {
         .catch(error => {
           console.log("Error");
         });
+    },
+    fillSupplier: function(params) {
+      this.suppliers.find(element => {
+        if (element.id == this.selectedSupplier) {
+          this.collects.supId = element.id;
+          this.collects.supplierAddress = element.address;
+        }
+      });
+    },
+    customFormatter(date) {
+      return moment(date).format("DD/MM/YYYY");
+    }
+  },
+  components: {
+    Datepicker
+  },
+  watch: {
+    date: function(val, newVal) {
+      this.niceDate =
+        val.getDate() + "/" + (val.getMonth() + 1) + "/" + val.getFullYear();
     }
   },
 
@@ -195,3 +231,13 @@ export default {
   }
 };
 </script>
+<style>
+.customdate input {
+  width: 100%;
+  height: 30px;
+  padding: 7px 10px;
+  background: #ddd;
+  border: 1px solid #4950571a;
+  border-radius: 3px;
+}
+</style>

@@ -37,7 +37,7 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">Date:</label>
               <div class="col-sm-2">
-                <datepicker :format="customFormatter" v-model="date" class="customdate" data-123></datepicker>
+                <datepicker :format="customFormatter" v-model="date" class="customdate"></datepicker>
                 <!-- <input ref="exp_date" v-model="collects.exp_date" type="text" class="form-control" /> -->
               </div>
 
