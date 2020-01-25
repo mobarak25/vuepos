@@ -5,7 +5,7 @@
         <router-link :to="{name:'Add_Stock'}">Stock Entry</router-link>
       </li>
       <li>
-        <a href>Cashier</a>
+        <router-link class="dropdown-item" :to="{name:'cashier'}">Cashier</router-link>
       </li>
       <li>
         <router-link class="dropdown-item" :to="{name:'Add_Supplier'}">Suppliers</router-link>
