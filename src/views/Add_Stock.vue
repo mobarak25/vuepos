@@ -74,10 +74,12 @@
                 <div class="pb-1 row">
                   <label class="col-sm-4 col-form-label">Product Name</label>
                   <div class="col-sm-8 input-group-sm">
-                    <select class="form-control">
+                    <select class="form-control" v-model="selectedProduct" @change="fillProduct">
+                      <option disabled value>Please select one</option>
                       <option
                         v-for="(product, index) in products"
                         :key="index"
+                        :value="product.id"
                         v-text="product.product_name"
                       ></option>
                     </select>
@@ -155,6 +157,7 @@ export default {
       suppliers: null,
       products: [],
       selectedSupplier: "",
+      selectedProduct: "",
       companies: null,
       product_names: null,
       host: "https://vuepos.000webhostapp.com/pos"
@@ -221,6 +224,9 @@ export default {
           this.collects.supplierAddress = element.address;
         }
       });
+    },
+    fillProduct: function() {
+      alert("gg");
     },
     customFormatter(date) {
       return moment(date).format("DD/MM/YYYY");
