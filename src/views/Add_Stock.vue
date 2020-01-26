@@ -75,9 +75,11 @@
                   <label class="col-sm-4 col-form-label">Product Name</label>
                   <div class="col-sm-8 input-group-sm">
                     <select class="form-control">
-                      <option>Product name</option>
-                      <option>Product name</option>
-                      <option>Product name</option>
+                      <option
+                        v-for="(product, index) in products"
+                        :key="index"
+                        v-text="product.product_name"
+                      ></option>
                     </select>
                   </div>
                 </div>
@@ -151,6 +153,7 @@ export default {
       productId: null,
       showSpinner: true,
       suppliers: null,
+      products: [],
       selectedSupplier: "",
       companies: null,
       product_names: null,
@@ -180,16 +183,23 @@ export default {
         });
     },
     getDatas: function() {
-      let url = this.host + "/get_suppliers.php";
+      let url = this.host;
+      function getSupplier() {
+        return axios.get(url + "/get_suppliers.php");
+      }
+      function getProduct() {
+        return axios.get(url + "/get_product_forstock.php");
+      }
       axios
-        .get(url)
-        .then(res => {
-          this.suppliers = res.data;
-          //this.companies = res.data.company;
-          //this.product_names = res.data.proName;
-          //this.productId = parseInt(res.data.last_product[0].id) + 1;
-          this.showSpinner = false;
-        })
+        .all([getSupplier(), getProduct()])
+        .then(
+          axios.spread((suplier, product) => {
+            this.suppliers = suplier.data;
+            this.products = product.data;
+
+            this.showSpinner = false;
+          })
+        )
         .then(() => {
           Object.keys(this.$refs).forEach(element => {
             var x = {};
