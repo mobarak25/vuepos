@@ -14,7 +14,14 @@
       <div class="p-3 bg-white mb-2">
         <div class="row">
           <div class="col-lg-2 input-group-sm">
-            <input type="text" class="form-control" placeholder="Product Code" />
+            <input
+              @keyup="sendRequest()"
+              type="text"
+              class="form-control"
+              placeholder="Product Code"
+              ref="barCode"
+              v-model="collects.barCode"
+            />
           </div>
           <div class="col-lg-2 input-group-sm">
             <input type="text" class="form-control" placeholder="Product Name" />
@@ -134,22 +141,16 @@ export default {
     };
   },
   methods: {
-    submitData: function(event) {
-      let url = this.host + "/add_product.php";
+    sendRequest: function() {
+      let url = this.host + "/get_selected_product.php";
 
       var formdata = new FormData();
-      formdata.append("name", this.collects.pro_name);
-      formdata.append("catId", this.collects.selected);
-      formdata.append("descr", this.collects.pro_desc);
-      formdata.append("cost", this.collects.pro_cost);
-      formdata.append("sell", this.collects.pro_sell);
-      formdata.append("qty", this.collects.pro_qty);
-      formdata.append("company", this.collects.company_id);
+      formdata.append("id", this.collects.barCode);
 
       axios
         .post(url, formdata)
         .then(res => {
-          this.getDatas();
+          console.log(res.data);
         })
         .catch(err => {
           console.log("Error");
@@ -159,7 +160,16 @@ export default {
 
   watch: {},
 
-  mounted() {}
+  mounted() {
+    Object.keys(this.$refs).forEach(element => {
+      var x = {};
+      this.collects = {};
+      Object.keys(this.$refs).forEach(element => {
+        x[element] = "";
+      });
+      this.collects = x;
+    });
+  }
 };
 </script>
 <style>
