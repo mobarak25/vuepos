@@ -15,7 +15,7 @@
         <div class="row">
           <div class="col-lg-2 input-group-sm">
             <input
-              @keyup="sendRequest()"
+              @keyup="sendRequest(46)"
               type="text"
               class="form-control"
               placeholder="Product Code"
@@ -24,16 +24,40 @@
             />
           </div>
           <div class="col-lg-2 input-group-sm">
-            <input type="text" class="form-control" placeholder="Product Name" />
+            <input
+              type="text"
+              class="form-control"
+              ref="name"
+              v-model="collects.name"
+              placeholder="Product Name"
+            />
           </div>
           <div class="col-lg-2 input-group-sm">
-            <input type="text" class="form-control" placeholder="Company" />
+            <input
+              type="text"
+              class="form-control"
+              ref="company"
+              v-model="collects.company"
+              placeholder="Company"
+            />
           </div>
           <div class="col-lg-2 input-group-sm">
-            <input type="text" class="form-control" placeholder="Quantity" />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Quantity"
+              ref="qty"
+              v-model="collects.qty"
+            />
           </div>
           <div class="col-lg-2 input-group-sm">
-            <input type="text" class="form-control" placeholder="Unit Price" />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Unit Price"
+              ref="unitPrice"
+              v-model="collects.unitPrice"
+            />
           </div>
 
           <div class="col-lg-2 input-group-sm">
@@ -150,7 +174,17 @@ export default {
       axios
         .post(url, formdata)
         .then(res => {
-          console.log(res.data);
+          if (res.data.length > 0) {
+            this.collects.name = res.data[0].product_name;
+            this.collects.company = res.data[0].company;
+            this.collects.qty = res.data[0].qty;
+            this.collects.unitPrice = res.data[0].selling_price;
+          } else {
+            this.collects.name = "";
+            this.collects.company = "";
+            this.collects.qty = "";
+            this.collects.unitPrice = "";
+          }
         })
         .catch(err => {
           console.log("Error");
