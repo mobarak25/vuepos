@@ -103,7 +103,7 @@
           <div class="d-flex">
             <div class="cash">
               <span>Grand Total</span>
-              <div class="mony"></div>
+              <div class="mony" v-text="grandTotal"></div>
             </div>
             <div class="cash">
               <span>Payment</span>
@@ -172,6 +172,7 @@ export default {
         product_unit_price: data.unitPrice,
         product_total_price: parseInt(data.unitPrice * data.qty)
       });
+      this.bulddata();
     },
     sendRequest: function() {
       let url = this.host + "/get_selected_product.php";
@@ -207,6 +208,17 @@ export default {
         });
         this.collects = x;
       });
+    }
+  },
+
+  computed: {
+    grandTotal: function() {
+      let cartTotal = 0;
+
+      this.cashier_items.forEach(function(item) {
+        cartTotal += item.product_total_price;
+      });
+      return cartTotal;
     }
   },
 
