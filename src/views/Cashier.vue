@@ -45,7 +45,7 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Quantity"
+              placeholder="Qty"
               ref="qty"
               v-model="collects.qty"
             />
@@ -61,7 +61,11 @@
           </div>
 
           <div class="col-lg-2 input-group-sm">
-            <a href="#" class="btn btn-sm btn-dark w-100">Add to Cashier</a>
+            <a
+              @click.prevent="displayCashier"
+              href="#"
+              class="btn btn-sm btn-dark w-100"
+            >Add to Cashier</a>
           </div>
         </div>
       </div>
@@ -80,22 +84,14 @@
           </tr>
         </thead>
 
-        <tbody>
-          <tr>
-            <td>Product Code</td>
-            <td>Product Name</td>
-            <td>Company</td>
-            <td>Quantity</td>
-            <td>Unit Price</td>
-            <td>Total Price</td>
-          </tr>
-          <tr>
-            <td>Product Code</td>
-            <td>Product Name</td>
-            <td>Company</td>
-            <td>Quantity</td>
-            <td>Unit Price</td>
-            <td>Total Price</td>
+        <tbody v-if="cashier_items.length > 0">
+          <tr v-for="(cashier_item,index) in cashier_items" :key="index">
+            <td v-text="cashier_item.product_id"></td>
+            <td v-text="cashier_item.product_name"></td>
+            <td v-text="cashier_item.product_company"></td>
+            <td v-text="cashier_item.product_qty"></td>
+            <td v-text="cashier_item.product_unit_price"></td>
+            <td v-text="cashier_item.product_total_price"></td>
           </tr>
         </tbody>
       </table>
@@ -106,8 +102,8 @@
         <div class="col-lg-8">
           <div class="d-flex">
             <div class="cash">
-              <span>Sub Total</span>
-              <input type="text" />
+              <span>Grand Total</span>
+              <div class="mony"></div>
             </div>
             <div class="cash">
               <span>Payment</span>
@@ -160,11 +156,23 @@ export default {
     return {
       title: "Cashier",
       collects: {},
+      cashier_items: [],
       showSpinner: false,
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
   methods: {
+    displayCashier: function() {
+      let data = this.collects;
+      this.cashier_items.push({
+        product_id: data.barCode,
+        product_name: data.name,
+        product_company: data.company,
+        product_qty: data.qty,
+        product_unit_price: data.unitPrice,
+        product_total_price: parseInt(data.unitPrice * data.qty)
+      });
+    },
     sendRequest: function() {
       let url = this.host + "/get_selected_product.php";
 
@@ -176,8 +184,8 @@ export default {
         .then(res => {
           if (res.data.length > 0) {
             this.collects.name = res.data[0].product_name;
-            this.collects.company = res.data[0].company;
-            this.collects.qty = res.data[0].qty;
+            this.collects.company = res.data[0].company_name;
+            //this.collects.qty = res.data[0].qty;
             this.collects.unitPrice = res.data[0].selling_price;
           } else {
             this.collects.name = "";
@@ -189,20 +197,23 @@ export default {
         .catch(err => {
           console.log("Error");
         });
+    },
+    bulddata: function(params) {
+      Object.keys(this.$refs).forEach(element => {
+        var x = {};
+        this.collects = {};
+        Object.keys(this.$refs).forEach(element => {
+          x[element] = "";
+        });
+        this.collects = x;
+      });
     }
   },
 
   watch: {},
 
   mounted() {
-    Object.keys(this.$refs).forEach(element => {
-      var x = {};
-      this.collects = {};
-      Object.keys(this.$refs).forEach(element => {
-        x[element] = "";
-      });
-      this.collects = x;
-    });
+    this.bulddata();
   }
 };
 </script>
@@ -220,7 +231,8 @@ export default {
   background-color: #495057;
   border: 1px solid #fff;
 }
-.cash input {
+.cash input,
+.mony {
   width: 100%;
   padding: 0 5px;
   margin: 0;
