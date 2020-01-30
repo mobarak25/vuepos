@@ -121,6 +121,7 @@ body{
 	line-height: 34px;
 	border-bottom: 2px solid #495057;
 }
+.form-control[readonly],
 .form-control{
 	background: #ddd;
 	border: 1px solid #4950571a;

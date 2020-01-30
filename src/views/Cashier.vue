@@ -53,6 +53,7 @@
           <div class="col-lg-2 input-group-sm">
             <input
               type="text"
+              readonly
               class="form-control"
               placeholder="Unit Price"
               ref="unitPrice"
@@ -107,11 +108,11 @@
             </div>
             <div class="cash">
               <span>Payment</span>
-              <input type="text" />
+              <input v-model="payment" type="text" />
             </div>
             <div class="cash">
               <span>Change</span>
-              <input type="text" />
+              <div class="mony" v-text="cashBack"></div>
             </div>
           </div>
           <div class="btnWrap d-flex border mt-3">
@@ -158,6 +159,7 @@ export default {
       collects: {},
       cashier_items: [],
       showSpinner: false,
+      payment: "",
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
@@ -219,6 +221,13 @@ export default {
         cartTotal += item.product_total_price;
       });
       return cartTotal;
+    },
+    cashBack: function() {
+      if (this.payment) {
+        return parseInt(this.payment - this.grandTotal);
+      } else {
+        return 0;
+      }
     }
   },
 
