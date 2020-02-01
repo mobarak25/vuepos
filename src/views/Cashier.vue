@@ -165,16 +165,18 @@ export default {
   },
   methods: {
     displayCashier: function() {
-      let data = this.collects;
-      this.cashier_items.push({
-        product_id: data.barCode,
-        product_name: data.name,
-        product_company: data.company,
-        product_qty: data.qty,
-        product_unit_price: data.unitPrice,
-        product_total_price: parseInt(data.unitPrice * data.qty)
-      });
-      this.bulddata();
+      if (this.collects.unitPrice) {
+        let data = this.collects;
+        this.cashier_items.push({
+          product_id: data.barCode,
+          product_name: data.name,
+          product_company: data.company,
+          product_qty: data.qty,
+          product_unit_price: data.unitPrice,
+          product_total_price: parseInt(data.unitPrice * data.qty)
+        });
+        this.bulddata();
+      }
     },
     sendRequest: function() {
       let url = this.host + "/get_selected_product.php";
