@@ -165,7 +165,16 @@ export default {
   },
   methods: {
     displayCashier: function() {
-      if (this.collects.unitPrice) {
+      if (this.collects.unitPrice.length == 0) {
+        alert("Please select a product");
+        return false;
+      } else if (this.collects.qty.length == 0) {
+        alert("Quantity Please");
+        return false;
+      } else if (
+        this.collects.unitPrice.length !== 0 &&
+        this.collects.qty.length !== 0
+      ) {
         let data = this.collects;
         this.cashier_items.push({
           product_id: data.barCode,
@@ -187,10 +196,9 @@ export default {
       axios
         .post(url, formdata)
         .then(res => {
-          if (res.data.length > 0) {
+          if (res.data.length !== 0) {
             this.collects.name = res.data[0].product_name;
             this.collects.company = res.data[0].company_name;
-            //this.collects.qty = res.data[0].qty;
             this.collects.unitPrice = res.data[0].selling_price;
           } else {
             this.collects.name = "";
