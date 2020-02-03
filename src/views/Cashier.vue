@@ -15,7 +15,7 @@
         <div class="row">
           <div class="col-lg-2 input-group-sm">
             <input
-              @keyup="sendRequest(46)"
+              @keyup="sendRequest()"
               type="text"
               class="form-control"
               placeholder="Product Code"
@@ -160,6 +160,7 @@ export default {
       cashier_items: [],
       showSpinner: false,
       payment: "",
+      selectedQty: "",
       host: "https://vuepos.000webhostapp.com/pos"
     };
   },
@@ -171,9 +172,13 @@ export default {
       } else if (this.collects.qty.length == 0) {
         alert("Quantity Please");
         return false;
+      } else if (this.collects.qty > this.selectedQty) {
+        alert("insuffisant found");
+        return false;
       } else if (
         this.collects.unitPrice.length !== 0 &&
-        this.collects.qty.length !== 0
+        this.collects.qty.length !== 0 &&
+        this.collects.qty <= this.selectedQty
       ) {
         let data = this.collects;
         this.cashier_items.push({
@@ -196,10 +201,12 @@ export default {
       axios
         .post(url, formdata)
         .then(res => {
+          console.log(res.data);
           if (res.data.length !== 0) {
             this.collects.name = res.data[0].product_name;
             this.collects.company = res.data[0].company_name;
             this.collects.unitPrice = res.data[0].selling_price;
+            this.selectedQty = res.data[0].qty;
           } else {
             this.collects.name = "";
             this.collects.company = "";
