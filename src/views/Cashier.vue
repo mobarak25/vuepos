@@ -235,12 +235,12 @@ export default {
       this.cashier_items.forEach(function(item) {
         cartTotal += item.product_total_price;
       });
-      return cartTotal.toLocaleString();
+      return cartTotal;
     },
     cashBack: function() {
       if (this.payment) {
         var storeCash = parseInt(this.payment) - parseInt(this.grandTotal);
-        return storeCash.toLocaleString();
+        return storeCash;
       } else {
         return 0;
       }
