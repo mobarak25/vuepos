@@ -166,20 +166,19 @@ export default {
   },
   methods: {
     displayCashier: function() {
-      if (this.collects.unitPrice.length == 0) {
+      if (this.collects.unitPrice == "") {
         alert("Please select a product");
-        return false;
-      } else if (this.collects.qty.length == 0) {
+      } else if (this.collects.qty == "") {
         alert("Quantity Please");
-        return false;
       } else if (this.collects.qty > this.selectedQty) {
-        alert("insuffisant found");
-        return false;
+        alert("Insufficient quantity");
       } else if (
-        this.collects.unitPrice.length !== 0 &&
-        this.collects.qty.length !== 0 &&
+        this.collects.unitPrice != "" &&
+        this.collects.qty != "" &&
         this.collects.qty <= this.selectedQty
       ) {
+        console.log("asdf");
+
         let data = this.collects;
         this.cashier_items.push({
           product_id: data.barCode,
@@ -187,7 +186,7 @@ export default {
           product_company: data.company,
           product_qty: data.qty,
           product_unit_price: data.unitPrice,
-          product_total_price: parseInt(data.unitPrice * data.qty)
+          product_total_price: data.unitPrice * data.qty
         });
         this.bulddata();
       }
@@ -201,12 +200,11 @@ export default {
       axios
         .post(url, formdata)
         .then(res => {
-          console.log(res.data);
           if (res.data.length !== 0) {
             this.collects.name = res.data[0].product_name;
             this.collects.company = res.data[0].company_name;
-            this.collects.unitPrice = res.data[0].selling_price;
-            this.selectedQty = res.data[0].qty;
+            this.collects.unitPrice = parseInt(res.data[0].selling_price);
+            this.selectedQty = parseInt(res.data[0].qty);
           } else {
             this.collects.name = "";
             this.collects.company = "";
@@ -237,11 +235,12 @@ export default {
       this.cashier_items.forEach(function(item) {
         cartTotal += item.product_total_price;
       });
-      return cartTotal;
+      return cartTotal.toLocaleString();
     },
     cashBack: function() {
       if (this.payment) {
-        return parseInt(this.payment - this.grandTotal);
+        var storeCash = parseInt(this.payment) - parseInt(this.grandTotal);
+        return storeCash.toLocaleString();
       } else {
         return 0;
       }

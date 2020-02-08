@@ -11,16 +11,13 @@
         <router-link class="dropdown-item" :to="{name:'Add_Supplier'}">Suppliers</router-link>
       </li>
       <li>
-        <a href>Coustomers</a>
+        <router-link class="dropdown-item" :to="{name:'Add_Customer'}">Coustomers</router-link>
       </li>
       <li>
-        <a href>Expense Detail</a>
+        <router-link class="dropdown-item" :to="{name:'Expense'}">Expense Detail</router-link>
       </li>
       <li>
         <a href>Sales Report</a>
-      </li>
-      <li>
-        <a href>Expense Detail</a>
       </li>
     </ul>
   </div>
